@@ -1,0 +1,27 @@
+= protobuf_descriptor
+
+* {Homepage}[https://rubygems.org/gems/protobuf_descriptor]
+* {Documentation}[http://rubydoc.info/gems/protobuf_descriptor/frames]
+* {Email}[mailto:hfwang at porkbuns.net]
+
+== Description
+
+TODO: Description
+
+== Features
+
+== Examples
+
+  require 'protobuf_descriptor'
+
+== Requirements
+
+== Install
+
+  $ gem install protobuf_descriptor
+
+== Copyright
+
+Copyright (c) 2014 Hsiu-Fan Wang
+
+See LICENSE.txt for details.
