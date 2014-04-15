@@ -1,4 +1,5 @@
 require "protobuf_descriptor/enum_descriptor"
+require "protobuf_descriptor/named_child"
 require "protobuf_descriptor/named_collection"
 
 require "active_support"
@@ -30,46 +31,6 @@ class ProtobufDescriptor
     alias_method :enum_types, :enum_type
     alias_method :extension_ranges, :extension_range
 
-    def fully_qualified_name
-      ancestors = []
-      parent = self.parent
-      loop do
-        break if ProtobufDescriptor::FileDescriptor === parent
-        ancestors << parent
-        parent = parent.parent
-      end
-
-      # parent is now the root file, and ancestor is the (potentially empty) ancestor chain.
-      pieces = [parent.package] + ancestors.map(&:name) + [self.name]
-      return "." + pieces.join(".")
-    end
-
-    def fully_qualified_java_name
-      ancestors = []
-      parent = self.parent
-      loop do
-        break if ProtobufDescriptor::FileDescriptor === parent
-        ancestors << parent
-        parent = parent.parent
-      end
-
-      # parent is the root file, and ancestor is the (potentially empty) ancestor chain.
-      pieces = [parent.java_package, parent.java_outer_classname].compact + ancestors.map(&:name) + [self.name]
-      return pieces.join(".")
-    end
-
-    def fully_qualified_wire_name
-      ancestors = []
-      parent = self.parent
-      loop do
-        break if ProtobufDescriptor::FileDescriptor === parent
-        ancestors << parent
-        parent = parent.parent
-      end
-
-      # parent is the root file, and ancestor is the (potentially empty) ancestor chain.
-      pieces = [parent.java_package] + ancestors.map(&:name) + [self.name]
-      return pieces.join(".")
-    end
+    include NamedChild
   end
 end

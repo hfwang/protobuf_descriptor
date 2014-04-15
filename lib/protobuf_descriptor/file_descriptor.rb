@@ -61,5 +61,21 @@ class ProtobufDescriptor
         return basename.camelize
       end
     end
+
+    def fully_qualified_name
+      return ".#{self.package}"
+    end
+
+    def fully_qualified_java_name
+      return [java_package, java_outer_classname].compact.join('.')
+    end
+
+    def fully_qualified_wire_name
+      return java_package
+    end
+
+    def fully_qualified_ruby_name
+      return "::#{self.package.gsub('.', '::')}"
+    end
   end
 end

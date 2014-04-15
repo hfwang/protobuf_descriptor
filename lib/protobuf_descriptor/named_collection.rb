@@ -2,6 +2,9 @@ require 'forwardable'
 
 class ProtobufDescriptor
   # Array wrapper that also supports lookup by "name"
+  #
+  # By default all members must respond to name, but this behavior can be
+  # overriden by passing a block in the initializer.
   class NamedCollection
     attr_accessor :collection, :matcher
 
