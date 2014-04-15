@@ -2,6 +2,13 @@ package porkbuns;
 
 // The following is copied from
 // https://code.google.com/p/protobuf/source/browse/trunk/src/google/protobuf/descriptor.proto
+enum UnnestedEnum {
+  // Default mode.
+  STRING = 0;
+  CORD = 1;
+  STRING_PIECE = 2;
+}
+
 message FieldOptions {
   // The ctype option instructs the C++ code generator to use a different
   // representation of the field than it normally would.  See the specific

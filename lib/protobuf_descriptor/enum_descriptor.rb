@@ -1,4 +1,5 @@
 require "active_support"
+require "protobuf_descriptor/named_child"
 require "active_support/core_ext/module/delegation"
 
 class ProtobufDescriptor
@@ -12,5 +13,7 @@ class ProtobufDescriptor
 
     delegate :name, :value, :options, to: :enum_descriptor_proto
     alias_method :values, :value
+
+    include NamedChild
   end
 end
