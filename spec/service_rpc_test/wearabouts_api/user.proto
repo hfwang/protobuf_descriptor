@@ -1,0 +1,36 @@
+package WearaboutsApi.User;
+
+option java_package = "us.wearabouts.chatabout.proto.user";
+
+import "wearabouts_pb.proto";
+
+message AuthenticateRequest {
+  optional string email = 1;
+  optional string phone = 2;
+  required string device_id = 3;
+  optional string name = 4;
+}
+message AuthenticateResponse {
+  optional WearaboutsPb.UserProto user = 1;
+  optional WearaboutsPb.DeviceLinkProto device_link = 2;
+  optional string auth_token = 3;
+}
+
+message MeRequest {}
+message MeResponse {
+  optional WearaboutsPb.UserProto user = 1;
+  optional WearaboutsPb.DeviceLinkProto device_link = 2;
+}
+
+message UpdateNameRequest {
+  required string name = 1;
+}
+message UpdateNameResponse {
+  optional WearaboutsPb.UserProto user = 1;
+}
+
+service UserService {
+  rpc Authenticate (AuthenticateRequest) returns (AuthenticateResponse);
+  rpc Me (MeRequest) returns (MeResponse);
+  rpc UpdateName (UpdateNameRequest) returns (UpdateNameResponse);
+}

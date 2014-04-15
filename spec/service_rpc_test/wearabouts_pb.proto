@@ -1,0 +1,32 @@
+package WearaboutsPb;
+
+option java_package = "us.wearabouts.chatabout.proto";
+
+message UserProto {
+  required string id = 1;
+  optional string email = 2;
+  optional string phone = 3;
+  optional string name = 4;
+}
+
+message ConversationProto {
+  required string id = 1;
+  repeated UserProto participants = 2;
+}
+
+message PostProto {
+  enum Kind {
+    TEXT = 1;
+    AUDIO = 2;
+  }
+  required string id = 1;
+
+  required Kind kind = 2;
+  optional string text = 100;
+  optional string audio_url = 200;
+}
+
+message DeviceLinkProto {
+  required string device_id = 1;
+  optional bool verified = 2;
+}

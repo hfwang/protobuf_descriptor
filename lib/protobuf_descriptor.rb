@@ -1,4 +1,7 @@
 require "protobuf_descriptor/version"
+require "protobuf_descriptor/file_descriptor"
+require "protobuf_descriptor/message_descriptor"
+require "protobuf_descriptor/named_collection"
 
 require "stringio"
 require "protobuf"
@@ -17,9 +20,14 @@ class ProtobufDescriptor
     return self.decode_from(File.open(path))
   end
 
-  attr_accessor :descripor_set
+  attr_accessor :descriptor_set, :file
 
   def initialize(stream)
     @descriptor_set = Google::Protobuf::FileDescriptorSet.new.decode_from(stream)
+    @file = ProtobufDescriptor::NamedCollection.new(@descriptor_set.file.map { |f| ProtobufDescriptor::FileDescriptor.new(self, f) }) do |name, member|
+      member.name == name || member.name == "#{name}.proto"
+    end
   end
+
+  alias_method :files, :file
 end
