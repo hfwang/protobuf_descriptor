@@ -38,7 +38,7 @@ def with_descriptor_file(source, args={})
   with_temp_file do |f|
     args = {
       out: f.path,
-      source: "#{File.dirname(__FILE__)}/#{source}/"
+      source: "#{File.dirname(__FILE__)}/protos/#{source}/"
     }.merge(args)
     generate_protobuf_descriptor(args)
     yield f
