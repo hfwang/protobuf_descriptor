@@ -30,4 +30,9 @@ class ProtobufDescriptor
   end
 
   alias_method :files, :file
+
+  # Shorthand for accessing files
+  def [](index)
+    return files[index]
+  end
 end

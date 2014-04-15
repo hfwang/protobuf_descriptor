@@ -1,0 +1,8 @@
+package WearaboutsApi.MultipleFiles;
+
+option java_package = "us.wearabouts.chatabout.multiple";
+option java_multiple_files = true;
+
+message Icon {
+  required int32 id = 1;
+}

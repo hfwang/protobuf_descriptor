@@ -3,9 +3,9 @@ require "spec_helper"
 describe ProtobufDescriptor::FileDescriptor do
   describe "#files" do
     it "has the right size" do
-      with_descriptor("service_rpc_test") do |descriptor|
-        expect(descriptor.files).to have(2).items
-        expect(descriptor.files.size).to eq(2)
+      with_descriptor("single_file_test") do |descriptor|
+        expect(descriptor.files).to have(1).items
+        expect(descriptor.files.size).to eq(1)
       end
     end
 
@@ -32,6 +32,20 @@ describe ProtobufDescriptor::FileDescriptor do
         with_descriptor("service_rpc_test") do |descriptor|
           expect(descriptor.files["wearabouts_api/userblah"]).to be_nil
         end
+      end
+    end
+  end
+
+  describe "#java_package" do
+    it "handles java_package option" do
+      with_descriptor("service_rpc_test") do |descriptor|
+        expect(descriptor.files[:wearabouts_pb].java_package).to eq("us.wearabouts.chatabout.proto")
+      end
+    end
+
+    it "defaults to package if no java_package specified" do
+      with_descriptor("single_file_test") do |descriptor|
+        expect(descriptor.files[:single_file].java_package).to eq("porkbuns")
       end
     end
   end

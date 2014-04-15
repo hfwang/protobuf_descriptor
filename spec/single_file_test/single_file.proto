@@ -1,7 +1,5 @@
 package porkbuns;
 
-option java_package = "net.porkbuns";
-
 // The following is copied from
 // https://code.google.com/p/protobuf/source/browse/trunk/src/google/protobuf/descriptor.proto
 message FieldOptions {

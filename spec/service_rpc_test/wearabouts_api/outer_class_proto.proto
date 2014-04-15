@@ -1,0 +1,8 @@
+package WearaboutsApi.OuterClassProto;
+
+option java_package = "us.wearabouts.chatabout.outer";
+option java_outer_classname = "OuterClassName";
+
+message Icon {
+  required int32 id = 1;
+}
