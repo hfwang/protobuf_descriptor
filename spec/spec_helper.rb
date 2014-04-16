@@ -10,13 +10,21 @@ require "tempfile"
 #
 # Raises if a class name occurs twice.
 def ghetto_parse_java_package(dir)
-  tokens = {
-    enum: /public\s+enum\s+(\w+)\s+implements\s+ProtoEnum\s+{/,
-    klass: /public\s+(?:(?:static|final)\s+)*class\s+(\w+)\s+extends\s+Message\s+{/,
-    open_brace: /{/,
-    close_brace: /}/,
-    eof: /\z/
-  }
+  tokens = [
+    # Wire enum
+    [:enum, /public\s+enum\s+(\w+)\s+implements\s+ProtoEnum\s+{/],
+    # Protoc Java enum
+    [:enum, /public\s+enum\s+(\w+)\s+implements\s+com\.google\.protobuf\.ProtocolMessageEnum\s+{/],
+    # This is used by the protocol buffer compiler to wrap all the protos
+    # defined in a single file.
+    [:namespace, /public\s+(?:(?:static|final)\s+)*class\s+(\w+)\s+{/],
+    # Wire message type
+    [:message, /public\s+(?:(?:static|final)\s+)*class\s+(\w+)\s+extends\s+Message\s+{/],
+    # Protoc java message
+    [:message, /public\s+(?:(?:static|final)\s+)*class\s+(\w+)\s+extends\s+com\.google\.protobuf\.GeneratedMessage\s+implements\s+(\w+)\s+{/],
+    [:open_brace, /{/],
+    [:close_brace, /}/],
+    [:eof, /\z/]]
 
   found = {}
 
@@ -40,11 +48,13 @@ def ghetto_parse_java_package(dir)
 
       # Build a stack of named components
       case token
-      when :enum, :klass
+      when :enum, :message
         # If we find a named component, add it to the stack as well as
         # generating its portion of the output.
         bits.push(match[1])
         found[match[1]] = bits.compact.join('.')
+      when :namespace
+        bits.push(match[1])
       when :open_brace
         bits.push(nil)
       when :close_brace
@@ -103,7 +113,7 @@ def generate_protobuf_descriptor(args={})
   command << "protoc"
   command << "-I#{args[:source]}"
   if args[:plugin]
-    command << "--#{args[:plugin]}_out=#{args[plugin_out]}"
+    command << "--#{args[:plugin]}_out=#{args[:plugin_out]}"
   end
   command += args[:extra_args]
   command << "--descriptor_set_out=#{args[:out]}"
