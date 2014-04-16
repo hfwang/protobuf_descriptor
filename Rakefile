@@ -36,3 +36,11 @@ rescue LoadError => e
   end
 end
 task :doc => :yard
+
+task :spec => ["wire-compiler.jar"] do |t|
+  # Declare this to ensure wire-compiler is downloaded
+end
+
+file "wire-compiler.jar" do |t|
+  sh 'wget --no-check-certificate --output-document="wire-compiler.jar" "http://repository.sonatype.org/service/local/artifact/maven/redirect?r=central-proxy&g=com.squareup.wire&a=wire-compiler&v=LATEST&c=jar-with-dependencies"'
+end

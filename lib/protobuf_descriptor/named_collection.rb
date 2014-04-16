@@ -37,5 +37,9 @@ class ProtobufDescriptor
         matcher.call(name.to_s, member)
       }
     end
+
+    def to_a
+      return self.collection.to_a
+    end
   end
 end

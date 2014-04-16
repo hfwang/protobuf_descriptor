@@ -32,5 +32,10 @@ class ProtobufDescriptor
     alias_method :extension_ranges, :extension_range
 
     include NamedChild
+
+    def children
+      @children ||= ProtobufDescriptor::NamedCollection.new(
+          @nested_type.collection + @enum_type.collection)
+    end
   end
 end

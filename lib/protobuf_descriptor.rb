@@ -31,6 +31,19 @@ class ProtobufDescriptor
 
   alias_method :files, :file
 
+  def all_descendants
+    seeds = files.to_a.dup
+    children = Set.new
+    while !seeds.empty?
+      seeds.pop.children.each do |child|
+        children << child
+
+        seeds << child if child.respond_to?(:children)
+      end
+    end
+    children
+  end
+
   # Shorthand for accessing files
   def [](index)
     return files[index]

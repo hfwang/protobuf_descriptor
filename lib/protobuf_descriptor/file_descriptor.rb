@@ -34,6 +34,11 @@ class ProtobufDescriptor
     alias_method :enum_types, :enum_type
     alias_method :services, :service
 
+    def children
+      @children ||= ProtobufDescriptor::NamedCollection.new(
+          @message_type.collection + @enum_type.collection + @service.collection)
+    end
+
     def name
       file_descriptor_proto.name
     end

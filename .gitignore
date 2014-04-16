@@ -16,3 +16,6 @@ tmp
 .yardoc
 _yardoc
 doc/
+
+# Ignore wire-compiler.jar, its auto-downloaded when running specs.
+wire-compiler.jar

@@ -1,0 +1,13 @@
+package aaa;
+
+enum Eaa {
+  FOO = 1;
+}
+
+message Maa {
+  message MaaNested {
+    optional int32 i = 2;
+  }
+
+  optional MaaNested maa_nested = 1;
+}
