@@ -31,8 +31,10 @@ def ghetto_parse_java_package(dir)
   Dir.glob("#{dir}/**/*.java").each do |filename|
     contents = File.read(filename)
 
-    package = contents.match(/package\s+(\w+);/)
+    package = contents.match(/package\s+([\w\.]+);/)
     package = package[1] unless package.nil?
+
+    puts "#{filename[dir.length..-1]}: package #{package}"
 
     bits = [package]
 
@@ -52,6 +54,7 @@ def ghetto_parse_java_package(dir)
         # If we find a named component, add it to the stack as well as
         # generating its portion of the output.
         bits.push(match[1])
+        raise "Type name #{match[1]} occurs twice!" if found[match[1]]
         found[match[1]] = bits.compact.join('.')
       when :namespace
         bits.push(match[1])

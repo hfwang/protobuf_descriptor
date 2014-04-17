@@ -1,0 +1,7 @@
+package aaa;
+
+option java_outer_classname = "CustomOuterClassName";
+
+enum Eac {
+  FOO2 = 1;
+}

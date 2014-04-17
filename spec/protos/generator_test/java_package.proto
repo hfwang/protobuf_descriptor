@@ -1,0 +1,7 @@
+package aaa;
+
+option java_package = "net.porkbuns.customPackage";
+
+enum Ead {
+  EAD = 2;
+}

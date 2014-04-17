@@ -1,0 +1,5 @@
+package aa_package;
+
+enum Eab {
+  FOO = 1;
+}
