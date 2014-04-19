@@ -34,7 +34,7 @@ def ghetto_parse_java_package(dir)
     package = contents.match(/package\s+([\w\.]+);/)
     package = package[1] unless package.nil?
 
-    puts "#{filename[dir.length..-1]}: package #{package}"
+    # puts "#{filename[dir.length..-1]}: package #{package}"
 
     bits = [package]
 
