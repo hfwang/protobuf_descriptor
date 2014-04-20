@@ -1,4 +1,5 @@
 require "protobuf_descriptor/enum_descriptor"
+require "protobuf_descriptor/has_parent"
 require "protobuf_descriptor/named_child"
 require "protobuf_descriptor/named_collection"
 
@@ -18,8 +19,14 @@ class ProtobufDescriptor
       delegate :name, :number, :label, :type_name, :extendee,
                :default_value, :options, to: :field_descriptor_proto
 
+      include ProtobufDescriptor::HasParent
+
       def field_type
         field_descriptor_proto.type
+      end
+
+      def resolve_type
+        protobuf_descriptor.resolve_type_name(self.type_name, self.parent)
       end
     end
 

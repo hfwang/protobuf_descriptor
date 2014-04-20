@@ -30,6 +30,7 @@ class ProtobufDescriptor
           })
     end
 
+    alias_method :parent, :file_descriptor_set
     alias_method :message_types, :message_type
     alias_method :messages, :message_type
     alias_method :enum_types, :enum_type

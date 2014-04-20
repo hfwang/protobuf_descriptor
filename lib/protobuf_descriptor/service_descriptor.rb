@@ -1,7 +1,8 @@
+require "protobuf_descriptor/named_collection"
+require "protobuf_descriptor/has_parent"
+
 require "active_support"
 require "active_support/core_ext/module/delegation"
-
-require "protobuf_descriptor/named_collection"
 
 class ProtobufDescriptor
   class ServiceDescriptor
@@ -15,12 +16,22 @@ class ProtobufDescriptor
 
       delegate :name, :options, to: :method_descriptor_proto
 
+      include ProtobufDescriptor::HasParent
+
       def input_type_name
         method_descriptor_proto.input_type
       end
 
       def output_type_name
         method_descriptor_proto.output_type
+      end
+
+      def resolve_input_type
+        protobuf_descriptor.resolve_type_name(input_type_name, file_descriptor)
+      end
+
+      def resolve_output_type
+        protobuf_descriptor.resolve_type_name(output_type_name, file_descriptor)
       end
     end
 
