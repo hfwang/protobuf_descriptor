@@ -31,7 +31,9 @@ class ProtobufDescriptor
     end
 
     alias_method :message_types, :message_type
+    alias_method :messages, :message_type
     alias_method :enum_types, :enum_type
+    alias_method :enums, :enum_types
     alias_method :services, :service
 
     def children

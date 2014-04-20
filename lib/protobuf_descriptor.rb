@@ -44,6 +44,26 @@ class ProtobufDescriptor
     children
   end
 
+  def resolve_type_name(type_name, relative_to=nil)
+    if type_name.start_with?('.')
+      all_descendants.find { |descendant|
+        descendant.fully_qualified_name == type_name
+      }
+    else
+      raise "Must provide a relative path!" unless relative_to
+
+      relative_to = relative_to.fully_qualified_name if relative_to.respond_to? :fully_qualified_name
+      parents = relative_to.split('.')
+
+      # The first element is the empty string, which is the root.
+      while parents.size > 1
+        type = resolve_type_name("#{parents.join('.')}.#{type_name}")
+        return type if type
+        parents.pop
+      end
+    end
+  end
+
   # Shorthand for accessing files
   def [](index)
     return files[index]
