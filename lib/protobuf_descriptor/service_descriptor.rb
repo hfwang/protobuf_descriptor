@@ -13,7 +13,7 @@ class ProtobufDescriptor
     #
     # See MethodDescriptorProto[https://code.google.com/p/protobuf/source/browse/trunk/src/google/protobuf/descriptor.proto#196]
     class MethodDescriptor
-      # The parent ServiceDescriptor[../ServiceDescriptor.html]
+      # The parent {ProtobufDescriptor::ServiceDescriptor}
       attr_reader :parent
 
       # The +MethodDescriptorProto+ this +MethodDescriptor+ is wrapping
@@ -49,28 +49,27 @@ class ProtobufDescriptor
       end
 
       # Resolves the method's +input_type_name+, returning the
-      # MessageDescriptor[link:MessageDescriptor.html] that this method
-      # receives.
+      # {ProtobufDescriptor::MessageDescriptor} that this method receives.
       def resolve_input_type
         protobuf_descriptor.resolve_type_name(input_type_name, file_descriptor)
       end
 
       # Resolves the method's +output_type_name+, returning the
-      # MessageDescriptor[link:MessageDescriptor.html] that this method
+      # {ProtobufDescriptor::MessageDescriptor} that this method
       # returns.
       def resolve_output_type
         protobuf_descriptor.resolve_type_name(output_type_name, file_descriptor)
       end
     end
 
-    # The parent FileDescriptor[FileDescriptor.html]
+    # The parent {ProtobufDescriptor::FileDescriptor}
     attr_reader :parent
 
     # The +ServiceDescriptorProto+ this +ServiceDescriptor+ is wrapping
     attr_reader :service_descriptor_proto
 
     # Set of methods contained within this service, as a NamedCollection of
-    # MethodDescriptor[link:ServiceDescriptor/MethodDescriptor.html]
+    # {ProtobufDescriptor::ServiceDescriptor::MethodDescriptor MethodDescriptors}
     attr_reader :method
 
     def initialize(parent, service_descriptor_proto)

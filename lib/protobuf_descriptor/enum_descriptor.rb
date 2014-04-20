@@ -7,9 +7,8 @@ class ProtobufDescriptor
   #
   # See {+EnumDescriptorProto+}[https://code.google.com/p/protobuf/source/browse/trunk/src/google/protobuf/descriptor.proto#84]
   class EnumDescriptor
-    # The containing FileDescriptor[link:FileDescriptor.html]
-    # or MessageDescriptor[link:MessageDescriptor.html] that
-    # defines this enum.
+    # The containing {ProtobufDescriptor::FileDescriptor} or
+    # {ProtobufDescriptor::MessageDescriptor} that defines this enum.
     attr_reader :parent
 
     # The +EnumDescriptorProto+ this +EnumDescriptor+ is wrapping.

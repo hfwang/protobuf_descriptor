@@ -15,7 +15,7 @@ class ProtobufDescriptor
     #
     # See FieldDescriptorProto[https://code.google.com/p/protobuf/source/browse/trunk/src/google/protobuf/descriptor.proto#103]
     class FieldDescriptor
-      # The parent MessageDescriptor[link:MessageDescriptor.html]
+      # The parent {ProtobufDescriptor::MessageDescriptor}
       attr_reader :parent
       # The +FieldDescriptorProto+ this +FieldDescriptor+ is wrapping.
       attr_reader :field_descriptor_proto
@@ -83,15 +83,15 @@ class ProtobufDescriptor
       end
 
       # Resolves the field's +type_name+, returning the
-      # MessageDescriptor[link:MessageDescriptor.html] or
-      # EnumDescriptor[link:EnumDescriptor.html] that this field will represent.
+      # {ProtobufDescriptor::MessageDescriptor} or
+      # {ProtobufDescriptor::EnumDescriptor} that this field will represent.
       def resolve_type
         protobuf_descriptor.resolve_type_name(self.type_name, self.parent)
       end
     end
 
-    # The containing FileDescriptor[link:FileDescriptor.html]
-    # or MessageDescriptor[link:MessageDescriptor.html] that
+    # The containing {ProtobufDescriptor::FileDescriptor}
+    # or {ProtobufDescriptor::MessageDescriptor} that
     # defines this message.
     attr_reader :parent
 
@@ -99,15 +99,15 @@ class ProtobufDescriptor
     attr_reader :message_descriptor_proto
 
     # The messages that are defined at the top level of this message, as a
-    # NamedCollection of MessageDescriptors[link:MessageDescriptor.html]
+    # NamedCollection of {ProtobufDescriptor::MessageDescriptor}
     attr_reader :nested_type
 
     # The enums that are defined at the top level of this message, as a
-    # NamedCollection of EnumDescriptors[link:EnumDescriptor.html]
+    # NamedCollection of {ProtobufDescriptor::EnumDescriptor}
     attr_reader :enum_type
 
     # The fields of this message, as a NamedCollection of
-    # FieldDescriptors[link:MessageDescriptor/FieldDescriptor.html]
+    # {ProtobufDescriptor::MessageDescriptor::FieldDescriptor}
     attr_reader :field
 
     def initialize(parent, message_descriptor_proto)

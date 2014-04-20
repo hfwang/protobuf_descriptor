@@ -11,25 +11,22 @@ class ProtobufDescriptor
   #
   # See {+FileDescriptorProto+}[https://code.google.com/p/protobuf/source/browse/trunk/src/google/protobuf/descriptor.proto#56]
   class FileDescriptor
-    # The parent FileDescriptorSet[link:ProtobufDescriptor.html]
+    # The parent {ProtobufDescriptor}
     attr_reader :file_descriptor_set
 
     # The +FileDescriptorProto+ this +FileDescriptor+ is wrapping.
     attr_reader :file_descriptor_proto
 
     # List of the message types that are defined at the top level of this file,
-    # as a NamedCollection of
-    # MessageDescriptors[link:MessageDescriptor.html]
+    # as a NamedCollection of {ProtobufDescriptor::MessageDescriptor}
     attr_reader :message_type
 
     # List of the enum types that are defined at the top level of this file,
-    # as a NamedCollection of
-    # EnumDescriptors[link:EnumDescriptor.html]
+    # as a NamedCollection of {ProtobufDescriptor::EnumDescriptor}
     attr_reader :enum_type
 
     # List of the services that are defined at the top level of this file, as a
-    # NamedCollection of
-    # ServiceDescriptors[link:ServiceDescriptor.html]
+    # NamedCollection of {ProtobufDescriptor::ServiceDescriptor}
     attr_reader :service
 
     def initialize(file_descriptor_set, file_descriptor_proto) #:nodoc:

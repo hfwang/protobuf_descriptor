@@ -34,7 +34,9 @@ class ProtobufDescriptor
 
   # Raw FileDescriptorSet protocol buffer
   attr_reader :descriptor_set
-  # Set of .proto files that are contained within the descriptor set, as a NamedCollection of FileDescriptors[link:ProtobufDescriptor/FileDescriptor.html]
+
+  # Set of .proto files that are contained within the descriptor set, as a
+  # NamedCollection of {ProtobufDescriptor::FileDescriptor}
   attr_reader :file
 
   def initialize(stream)
@@ -47,10 +49,9 @@ class ProtobufDescriptor
   alias_method :files, :file
 
   # Returns all the named descendants of this descriptor set, basically every
-  # defined MessageDescriptor[link:ProtobufDescriptor/MessageDescriptor.html],
-  # EnumDescriptor[link:ProtobufDescriptor/EnumDescriptor.html], and
-  # ServiceDescriptor[link:ProtobufDescriptor/ServiceDescriptor] referenced
-  # in this set of proto files.
+  # {ProtobufDescriptor::MessageDescriptor},
+  # {ProtobufDescriptor::EnumDescriptor}, and
+  # {ProtobufDescriptor::ServiceDescriptor} defined in this set of proto files.
   def all_descendants
     seeds = files.to_a.dup
     children = Set.new
