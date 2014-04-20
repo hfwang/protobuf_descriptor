@@ -7,20 +7,35 @@ require "stringio"
 require "protobuf"
 require "protobuf/descriptors/google/protobuf/descriptor.pb.rb"
 
+# A wrapper for the
+# {+FileDescriptorSet+}[https://code.google.com/p/protobuf/source/browse/trunk/src/google/protobuf/descriptor.proto#49]
+# proto. This acts as the root from which name resolution occurs.
 class ProtobufDescriptor
+  # Decode a ProtobufDescriptor from bytes
+  #
+  #   ProtobufDescriptor.decode(File.read("descriptor.desc"))
   def self.decode(bytes)
     return self.decode_from(::StringIO.new(bytes))
   end
 
+  # Decode a ProtobufDescriptor from a readable stream
+  #
+  #   ProtobufDescriptor.decode_from(File.open("descriptor.desc"))
   def self.decode_from(stream)
     return self.new(stream)
   end
 
+  # Loads a ProtobufDescriptor from a file
+  #
+  #   ProtobufDescriptor.load("descriptor.desc")
   def self.load(path)
     return self.decode_from(File.open(path))
   end
 
-  attr_accessor :descriptor_set, :file
+  # Raw FileDescriptorSet protocol buffer
+  attr_reader :descriptor_set
+  # Set of .proto files that are contained within the descriptor set, as a NamedCollection of FileDescriptors[link:ProtobufDescriptor/FileDescriptor.html]
+  attr_reader :file
 
   def initialize(stream)
     @descriptor_set = Google::Protobuf::FileDescriptorSet.new.decode_from(stream)
@@ -31,6 +46,11 @@ class ProtobufDescriptor
 
   alias_method :files, :file
 
+  # Returns all the named descendants of this descriptor set, basically every
+  # defined MessageDescriptor[link:ProtobufDescriptor/MessageDescriptor.html],
+  # EnumDescriptor[link:ProtobufDescriptor/EnumDescriptor.html], and
+  # ServiceDescriptor[link:ProtobufDescriptor/ServiceDescriptor] referenced
+  # in this set of proto files.
   def all_descendants
     seeds = files.to_a.dup
     children = Set.new
@@ -44,6 +64,10 @@ class ProtobufDescriptor
     children
   end
 
+  # Finds the descriptor corresponding to a given type name. +type_name+ can
+  # either be a fully qualified name (with a leading "."), or a relative name,
+  # in which case +relative_to+ must either be a descriptor or a fully qualified
+  # name that the relative name is resolved relative to.
   def resolve_type_name(type_name, relative_to=nil)
     if type_name.start_with?('.')
       all_descendants.find { |descendant|
