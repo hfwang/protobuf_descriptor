@@ -1,4 +1,11 @@
+=== 1.0.0 / 2014-04-25
+
+Huge version bump, update gem dependency to not be non-sensical. Should have no
+functional changes.
+
+
 === 0.1.0 / 2014-04-11
 
-* Initial release:
+Initial release:
 
+* This gem is now minimally usable.
