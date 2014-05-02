@@ -1,9 +1,6 @@
 require "protobuf_descriptor/named_collection"
 require "protobuf_descriptor/has_parent"
 
-require "active_support"
-require "active_support/core_ext/module/delegation"
-
 class ProtobufDescriptor
   # Describes a service.
   #

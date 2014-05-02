@@ -1,6 +1,4 @@
-require "active_support"
 require "protobuf_descriptor/named_child"
-require "active_support/core_ext/module/delegation"
 
 class ProtobufDescriptor
   # Describes an enum type.

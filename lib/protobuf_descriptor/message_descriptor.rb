@@ -3,9 +3,6 @@ require "protobuf_descriptor/has_parent"
 require "protobuf_descriptor/named_child"
 require "protobuf_descriptor/named_collection"
 
-require "active_support"
-require "active_support/core_ext/module/delegation"
-
 class ProtobufDescriptor
   # Describes a message type.
   #

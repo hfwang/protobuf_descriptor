@@ -2,10 +2,6 @@ require "protobuf_descriptor/enum_descriptor"
 require "protobuf_descriptor/message_descriptor"
 require "protobuf_descriptor/service_descriptor"
 
-require "active_support"
-require "active_support/core_ext/object/blank"
-require "active_support/core_ext/string/inflections"
-
 class ProtobufDescriptor
   # Describes a complete .proto file.
   #
@@ -77,7 +73,7 @@ class ProtobufDescriptor
     # inappropriate because proto packages do not normally start with backwards
     # domain names.
     def java_package
-      if file_descriptor_proto.has_field?(:options) && file_descriptor_proto.options.java_package.present?
+      if file_descriptor_proto.has_field?(:options) && present?(file_descriptor_proto.options.java_package)
         return file_descriptor_proto.options.java_package
       else
         return file_descriptor_proto.package
@@ -90,14 +86,14 @@ class ProtobufDescriptor
     # a .proto always translates to a single class, but you may want to
     # explicitly choose the class name).
     def java_outer_classname
-      if file_descriptor_proto.has_field?(:options) && file_descriptor_proto.options.java_multiple_files.present?
+      if file_descriptor_proto.has_field?(:options) && present?(file_descriptor_proto.options.java_multiple_files)
         return nil
-      elsif file_descriptor_proto.has_field?(:options) && file_descriptor_proto.options.java_outer_classname.present?
+      elsif file_descriptor_proto.has_field?(:options) && present?(file_descriptor_proto.options.java_outer_classname)
         return file_descriptor_proto.options.java_outer_classname
       else
         basename = name.split('/').last
         basename = basename.gsub('.proto', '')
-        return basename.camelize
+        return camelize(basename)
       end
     end
 
@@ -122,6 +118,24 @@ class ProtobufDescriptor
     # protobuf gems.
     def fully_qualified_ruby_name
       return "::#{self.package.gsub('.', '::')}"
+    end
+
+    private
+    # Copy over a bunch of methods that are normally part of active_support:
+    def present?(string)
+      return !blank?(string)
+    end
+
+    def blank?(string)
+      string.respond_to?(:empty?) ? !!string.empty? : !string
+    end
+
+    def camelize(string)
+      if string.respond_to?(:camelize)
+        return string.camelize
+      else
+        return string.split("_").map { |s| s.capitalize }.join("")
+      end
     end
   end
 end
