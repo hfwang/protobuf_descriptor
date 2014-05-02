@@ -2,6 +2,7 @@
 
 * {Homepage}[https://rubygems.org/gems/protobuf_descriptor]
 * {Documentation}[http://rubydoc.info/github/hfwang/protobuf_descriptor/master/frames]
+* {<img src="https://travis-ci.org/hfwang/protobuf_descriptor.svg?branch=master" alt="Build Status" />}[https://travis-ci.org/hfwang/protobuf_descriptor]
 
 == Description
 
