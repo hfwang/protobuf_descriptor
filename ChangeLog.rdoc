@@ -1,3 +1,9 @@
+=== 1.0.1 / not yet released
+
+Remove active_support dependency. The protobuf library still requires
+active_support though, so this doesn't really change anything.
+
+
 === 1.0.0 / 2014-04-25
 
 Huge version bump, update gem dependency to not be non-sensical. Should have no
