@@ -17,5 +17,8 @@ tmp
 _yardoc
 doc/
 
+# Ignore gemfile.lock
+Gemfile.lock
+
 # Ignore wire-compiler.jar, its auto-downloaded when running specs.
 wire-compiler.jar
