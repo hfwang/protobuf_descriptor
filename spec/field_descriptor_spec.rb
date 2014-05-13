@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe ProtobufDescriptor::MessageDescriptor::FieldDescriptor do
+describe ProtobufDescriptor::FieldDescriptor do
   describe "#type_name" do
     it "is sane" do
       with_descriptor("single_file_test") do |descriptor|
