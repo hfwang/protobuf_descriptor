@@ -2,9 +2,11 @@
 
 [![Gem Version](http://img.shields.io/gem/v/protobuf_descriptor.svg)][gem]
 [![Build Status](http://img.shields.io/travis/hfwang/protobuf_descriptor.svg)][travis]
+[![MIT license](http://img.shields.io/badge/license-MIT-red.svg)][license]
 
 [gem]: https://rubygems.org/gems/protobuf_descriptor
 [travis]: https://travis-ci.org/hfwang/protobuf_descriptor
+[license]: https://github.com/hfwang/protobuf_descriptor/blob/master/LICENSE.txt
 
 * [Homepage](https://rubygems.org/gems/protobuf_descriptor)
 * [Documentation](http://rubydoc.info/github/hfwang/protobuf_descriptor/master/frames)
