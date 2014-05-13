@@ -1,8 +1,3 @@
-require "protobuf_descriptor/enum_descriptor"
-require "protobuf_descriptor/has_parent"
-require "protobuf_descriptor/named_child"
-require "protobuf_descriptor/named_collection"
-
 class ProtobufDescriptor
   # Describes a message type.
   #

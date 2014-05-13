@@ -1,7 +1,3 @@
-require "protobuf_descriptor/enum_descriptor"
-require "protobuf_descriptor/message_descriptor"
-require "protobuf_descriptor/service_descriptor"
-
 class ProtobufDescriptor
   # Describes a complete .proto file.
   #

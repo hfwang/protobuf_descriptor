@@ -1,5 +1,3 @@
-require "protobuf_descriptor/named_child"
-
 class ProtobufDescriptor
   # Describes an enum type.
   #

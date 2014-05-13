@@ -1,6 +1,3 @@
-require "protobuf_descriptor/named_collection"
-require "protobuf_descriptor/has_parent"
-
 class ProtobufDescriptor
   # Describes a service.
   #

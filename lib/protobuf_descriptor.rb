@@ -1,7 +1,4 @@
 require "protobuf_descriptor/version"
-require "protobuf_descriptor/file_descriptor"
-require "protobuf_descriptor/message_descriptor"
-require "protobuf_descriptor/named_collection"
 
 require "stringio"
 require "protobuf"
@@ -11,6 +8,15 @@ require "protobuf/descriptors/google/protobuf/descriptor.pb.rb"
 # {+FileDescriptorSet+}[https://code.google.com/p/protobuf/source/browse/trunk/src/google/protobuf/descriptor.proto#49]
 # proto. This acts as the root from which name resolution occurs.
 class ProtobufDescriptor
+  autoload :EnumDescriptor, "protobuf_descriptor/enum_descriptor"
+  autoload :FileDescriptor, "protobuf_descriptor/file_descriptor"
+  autoload :MessageDescriptor, "protobuf_descriptor/message_descriptor"
+  autoload :ServiceDescriptor, "protobuf_descriptor/service_descriptor"
+
+  autoload :HasParent, "protobuf_descriptor/has_parent"
+  autoload :NamedChild, "protobuf_descriptor/named_child"
+  autoload :NamedCollection, "protobuf_descriptor/named_collection"
+
   # Decode a ProtobufDescriptor from bytes
   #
   #   ProtobufDescriptor.decode(File.read("descriptor.desc"))
