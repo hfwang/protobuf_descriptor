@@ -1,0 +1,71 @@
+
+ë
+#wearabouts_api/multiple_files.protoWearaboutsApi.MultipleFiles"
+Icon
+
+id (*
+IconEnum
+FOOB$
+ us.wearabouts.chatabout.multipleP
+°
+&wearabouts_api/outer_class_proto.protoWearaboutsApi.OuterClassProto"
+Icon
+
+id (*
+IconEnum
+FOOB/
+us.wearabouts.chatabout.outerBOuterClassName
+≥
+wearabouts_api/user.protoWearaboutsApi.Userwearabouts_pb.proto"T
+AuthenticateRequest
+email (	
+phone (	
+	device_id (	
+name (	"Ö
+AuthenticateResponse%
+user (2.WearaboutsPb.UserProto2
+device_link (2.WearaboutsPb.DeviceLinkProto
+
+auth_token (	"
+	MeRequest"g
+
+MeResponse%
+user (2.WearaboutsPb.UserProto2
+device_link (2.WearaboutsPb.DeviceLinkProto"!
+UpdateNameRequest
+name (	";
+UpdateNameResponse%
+user (2.WearaboutsPb.UserProto2í
+UserServicea
+Authenticate'.WearaboutsApi.User.AuthenticateRequest(.WearaboutsApi.User.AuthenticateResponseC
+Me.WearaboutsApi.User.MeRequest.WearaboutsApi.User.MeResponse[
+
+UpdateName%.WearaboutsApi.User.UpdateNameRequest&.WearaboutsApi.User.UpdateNameResponseB$
+"us.wearabouts.chatabout.proto.user
+·
+wearabouts_pb.protoWearaboutsPb"ç
+	UserProto
+
+id (	9
+user_details (2#.WearaboutsPb.UserProto.UserDetails9
+UserDetails
+email (	
+phone (	
+name (	"N
+ConversationProto
+
+id (	-
+participants (2.WearaboutsPb.UserProto"Ç
+	PostProto
+
+id (	*
+kind (2.WearaboutsPb.PostProto.Kind
+textd (	
+	audio_url» (	"
+Kind
+TEXT	
+AUDIO"6
+DeviceLinkProto
+	device_id (	
+verified (B
+us.wearabouts.chatabout.proto

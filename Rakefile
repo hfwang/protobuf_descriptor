@@ -41,6 +41,109 @@ task :spec => ["wire-compiler.jar"] do |t|
   # Declare this to ensure wire-compiler is downloaded
 end
 
+desc "Compiles the protocol buffer decls used by the specs"
+task :compile_spec_protos do
+  require "pathname"
+  require "tempfile"
+  require "tmpdir"
+  require "zip"
+
+  VERBOSE = ENV["VERBOSE"]
+
+  exec_proto_compiler = lambda do |args|
+    args = {
+      :source => ".",
+      :extra_args => [],
+      :plugin => nil,
+      :plugin_out => "",
+      :out => "out.desc"
+    }.merge(args)
+    args[:source] += '/' unless args[:source].end_with?('/')
+
+    command = []
+    command << "protoc"
+    command << "-I#{args[:source]}"
+    if args[:plugin]
+      command << "--#{args[:plugin]}_out=#{args[:plugin_out]}"
+    end
+    command += args[:extra_args]
+    command << "--descriptor_set_out=#{args[:out]}"
+    command += Dir.glob(File.join(args[:source], "**", "*.proto"))
+
+    rv = system(*command)
+
+    raise "ProtobufDescriptor generation failed!" unless rv
+  end
+
+  exec_wire_compiler = lambda do |args|
+    args = {
+      :out => ".",
+      :source => ".",
+      :extra_args => []
+    }.merge(args)
+
+    jar_path = File.realpath(File.join(File.dirname(__FILE__), "wire-compiler.jar"))
+    command = ["java", "-jar", jar_path]
+    command << "--proto_path=#{args[:source]}"
+    command += args[:extra_args]
+    command << "--java_out=#{args[:out]}"
+    sources = Dir.glob(File.join(args[:source], "**", "*.proto")).map { |p|
+      Pathname.new(p).relative_path_from(Pathname.new(args[:source])).to_s
+    }
+    command += sources
+
+    tmp_log = Tempfile.new(["wire-compiler", ".log"])
+    begin
+      rv = system(*command, out: [tmp_log.path, "a"], err: [tmp_log.path, "a"])
+      puts File.read(tmp_log) if VERBOSE
+
+      raise "Wire protobuf generation failed!\n#{File.read(tmp_log)}" unless rv
+    ensure
+      tmp_log.close
+      tmp_log.unlink
+    end
+  end
+  create_zip = lambda do |dir, dest|
+    dirpath = Pathname.new(dir)
+    File.delete(dest) if File.exist?(dest)
+    Zip::File.open(dest, Zip::File::CREATE) do |zipfile|
+      # require "pry"
+      # binding.pry
+      (Dir[File.join(dir, "**", "**")] + Dir[File.join(dir, "**")]).uniq.each do |file|
+        next if File.directory?(file)
+        relative_path = Pathname.new(file).relative_path_from(dirpath)
+        zipfile.add(relative_path, file)
+        puts "#{dest} <- #{relative_path}" if VERBOSE
+      end
+    end
+  end
+
+  file_sets = Dir["spec/protos/*"].select { |d| File.directory?(d) }
+
+  file_sets.each do |source|
+    puts "Building #{source}"
+    Dir.mktmpdir do |dir|
+      args = {
+        :out => "#{source}.desc",
+        :source => source,
+        :plugin => :java,
+        :plugin_out => dir
+      }
+      exec_proto_compiler.call(args)
+      create_zip.call(dir, "#{source}.java.zip")
+    end
+
+    Dir.mktmpdir do |dir|
+      args = {
+        :source => source,
+        :out => dir
+      }
+      exec_wire_compiler.call(args)
+      create_zip.call(dir, "#{source}.wire.zip")
+    end
+  end
+end
+
 file "wire-compiler.jar" do |t|
   sh 'wget --no-check-certificate --output-document="wire-compiler.jar" "http://repository.sonatype.org/service/local/artifact/maven/redirect?r=central-proxy&g=com.squareup.wire&a=wire-compiler&v=LATEST&c=jar-with-dependencies"'
 end

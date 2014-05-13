@@ -1,15 +1,33 @@
-require 'rspec'
+require "rspec"
 require "protobuf_descriptor"
 
 require "fileutils"
 require "pathname"
 require "tempfile"
+require "tmpdir"
+require "zip"
+
+VERBOSE = false
 
 # "Parses" a java package returning a mapping of class/enum names to their fully
 # qualified name.
 #
 # Raises if a class name occurs twice.
 def ghetto_parse_java_package(dir)
+  if dir.end_with?(".zip")
+    Dir.mktmpdir do |temp_dir|
+      Zip::File.open(dir) do |zip_file|
+        zip_file.each do |entry|
+          puts "Making #{temp_dir}/#{File.dirname(entry.name)}" if VERBOSE
+          FileUtils.mkdir_p File.join(temp_dir, File.dirname(entry.name))
+          puts "Extracting #{temp_dir}/#{entry.name}" if VERBOSE
+          entry.extract(File.join(temp_dir, entry.name))
+        end
+      end
+      return ghetto_parse_java_package(temp_dir)
+    end
+  end
+
   tokens = [
     # Wire enum
     [:enum, /public\s+enum\s+(\w+)\s+implements\s+ProtoEnum\s+{/],
@@ -34,7 +52,7 @@ def ghetto_parse_java_package(dir)
     package = contents.match(/package\s+([\w\.]+);/)
     package = package[1] unless package.nil?
 
-    # puts "#{filename[dir.length..-1]}: package #{package}"
+    puts "#{filename[dir.length..-1]}: package #{package}" if VERBOSE
 
     bits = [package]
 
@@ -64,7 +82,7 @@ def ghetto_parse_java_package(dir)
         bits.pop
       end
 
-      # puts "#{token}@#{offset} #{bits.inspect}"
+      puts "#{token}@#{offset} #{bits.inspect}" if VERBOSE
     end
   end
   return found
@@ -80,62 +98,12 @@ def with_temp_file(name="tempfile")
   end
 end
 
-def compile_wire_protobuf(args={})
-  args = {
-    destination: ".",
-    source: ".",
-    extra_args: []
-  }.merge(args)
-
-  jar_path = File.realpath("#{File.dirname(__FILE__)}/../wire-compiler.jar")
-  command = ["java", "-jar", jar_path]
-  command << "--proto_path=#{args[:source]}"
-  command += args[:extra_args]
-  command << "--java_out=#{args[:destination]}"
-  command += Dir.glob("#{args[:source]}**/*.proto").map { |p|
-    Pathname.new(p).relative_path_from(Pathname.new(args[:source])).to_s
-  }
-  with_temp_file do |tmp_log|
-    rv = system(*command, out: [tmp_log.path, "a"], err: [tmp_log.path, "a"])
-
-    raise "Wire protobuf generation failed!\n#{File.read(tmp_log)}" unless rv
-  end
-end
-
-def generate_protobuf_descriptor(args={})
-  args = {
-    source: ".",
-    extra_args: [],
-    plugin: nil,
-    plugin_out: "",
-    out: "out.desc"
-  }.merge(args)
-  args[:source] += '/' unless args[:source].end_with?('/')
-
-  command = []
-  command << "protoc"
-  command << "-I#{args[:source]}"
-  if args[:plugin]
-    command << "--#{args[:plugin]}_out=#{args[:plugin_out]}"
-  end
-  command += args[:extra_args]
-  command << "--descriptor_set_out=#{args[:out]}"
-  command += Dir.glob("#{args[:source]}**/*.proto")
-
-  rv = system(*command)
-
-  raise "ProtobufDescriptor generation failed!" unless rv
-end
-
 def with_descriptor_file(source, args={})
-  with_temp_file do |f|
-    args = {
-      out: f.path,
-      source: "#{File.dirname(__FILE__)}/protos/#{source}/"
-    }.merge(args)
-    generate_protobuf_descriptor(args)
-    yield f
-  end
+  yield File.open("#{File.dirname(__FILE__)}/protos/#{source}.desc")
+end
+
+def find_generated_files(source, kind)
+  return "#{File.dirname(__FILE__)}/protos/#{source}.#{kind}.zip"
 end
 
 def with_descriptor(source, args={})
