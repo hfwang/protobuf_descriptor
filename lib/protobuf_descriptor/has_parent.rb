@@ -22,5 +22,40 @@ class ProtobufDescriptor
       end
       return p
     end
+
+    def compute_source_code_info_path
+      path_component = parent.compute_source_code_info_path_component(self)
+      parent_path = if parent.class.name == "ProtobufDescriptor::FileDescriptor"
+                      []
+                    else
+                      parent.compute_source_code_info_path
+                    end
+      return parent_path + path_component
+    end
+
+    def source_code_info_locations
+      raise "No source code info attached!" unless file_descriptor.has_source_code_info?
+
+      source_code_info_path = compute_source_code_info_path
+      return file_descriptor.source_code_info.location.select { |location|
+        location.path == source_code_info_path
+      }
+    end
+
+    def source_code_info_location
+      return source_code_info_locations.first
+    end
+
+    def source_code_info_span
+      return source_code_info_location.span
+    end
+
+    def leading_comments
+      return source_code_info_location.leading_comments
+    end
+
+    def trailing_comments
+      return source_code_info_location.trailing_comments
+    end
   end
 end

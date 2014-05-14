@@ -56,7 +56,8 @@ task :compile_spec_protos do
       :extra_args => [],
       :plugin => nil,
       :plugin_out => "",
-      :out => "out.desc"
+      :out => "out.desc",
+      :include_source_info => false,
     }.merge(args)
     args[:source] += '/' unless args[:source].end_with?('/')
 
@@ -68,6 +69,9 @@ task :compile_spec_protos do
     end
     command += args[:extra_args]
     command << "--descriptor_set_out=#{args[:out]}"
+    if args[:include_source_info]
+      command << "--include_source_info"
+    end
     command += Dir.glob(File.join(args[:source], "**", "*.proto"))
 
     rv = system(*command)
@@ -120,6 +124,13 @@ task :compile_spec_protos do
 
   file_sets = Dir["spec/protos/*"].select { |d| File.directory?(d) }
 
+  source = "spec/protos/source_info"
+  puts "Building #{source} (with included source info)"
+  exec_proto_compiler.call({
+    :out => "#{source}.srcinfo.desc",
+    :source => source,
+    :include_source_info => true
+  })
   file_sets.each do |source|
     puts "Building #{source}"
     Dir.mktmpdir do |dir|

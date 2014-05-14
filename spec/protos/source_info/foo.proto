@@ -1,0 +1,59 @@
+package foo;
+
+// Test message for Bar
+message Bar {
+  // Test message for NestedEnum
+  enum NestedEnum {
+    // Test message for VALUE_TWO
+    VALUE_TWO = 1;
+  }
+
+  // Test message for NestedBar
+  message NestedBar {
+    // Test message for NestedNestedEnum
+    enum NestedNestedEnum {
+      // Test message for VALUE_THREE
+      VALUE_THREE = 1;
+    }
+    // Test message for foo
+    required NestedNestedEnum foo = 1;
+  }
+
+  optional int32 foo = 1;  // Comment attached to foo.
+  // Comment attached to bar.
+  optional int32 bar = 2;
+
+  optional string baz = 3;
+  // Comment attached to baz.
+  // Another line attached to baz.
+
+  // Comment attached to qux.
+  //
+  // Another line attached to qux.
+  optional double qux = 4;
+
+  optional string corge = 5;
+  /* Block comment attached
+   * to corge.  Leading asterisks
+   * will be removed. */
+  /* Block comment attached to
+   * grault. */
+  optional int32 grault = 6;
+}
+// Comment attached to Bar
+
+// Comment for FooService
+service FooService {
+  /* Comment for Baz
+   * Maybe comments on return types.
+   */
+  rpc Baz(Bar) returns (Bar);
+  // Trailing comment for Baz
+}
+// Comment attached to FooService
+
+// Comment for BaseEnum
+enum BaseEnum {
+  // Comment for VALUE_ONE
+  VALUE_ONE = 1;
+}

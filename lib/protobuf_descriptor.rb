@@ -101,4 +101,9 @@ class ProtobufDescriptor
   def [](index)
     return files[index]
   end
+
+  # Returns whether all files have source code info attached
+  def has_source_code_info?
+    return files.all? { |f| f.has_source_code_info? }
+  end
 end
