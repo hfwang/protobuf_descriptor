@@ -9,6 +9,7 @@ require "protobuf/descriptors/google/protobuf/descriptor.pb.rb"
 # proto. This acts as the root from which name resolution occurs.
 class ProtobufDescriptor
   autoload :EnumDescriptor, "protobuf_descriptor/enum_descriptor"
+  autoload :EnumValueDescriptor, "protobuf_descriptor/enum_value_descriptor"
   autoload :FieldDescriptor, "protobuf_descriptor/field_descriptor"
   autoload :FileDescriptor, "protobuf_descriptor/file_descriptor"
   autoload :MethodDescriptor, "protobuf_descriptor/method_descriptor"

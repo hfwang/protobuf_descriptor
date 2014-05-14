@@ -46,6 +46,9 @@ describe "source_code_info" do
     expect(descriptor.resolve_type_name(".foo.FooService").leading_comments.strip).to eq("Comment for FooService")
     expect(descriptor.resolve_type_name(".foo.FooService").methods["Baz"].leading_comments.strip).to eq("Comment for Baz\n Maybe comments on return types.")
     expect(descriptor.resolve_type_name(".foo.BaseEnum").leading_comments.strip).to eq("Comment for BaseEnum")
+    expect(descriptor.resolve_type_name(".foo.BaseEnum").values["VALUE_ONE"].leading_comments).to eq(" Comment for VALUE_ONE\n")
+    expect(descriptor.resolve_type_name(".foo.Bar.NestedEnum").values["VALUE_TWO"].leading_comments).to eq(" Test message for VALUE_TWO\n")
+    expect(descriptor.resolve_type_name(".foo.Bar.NestedBar.NestedNestedEnum").values["VALUE_THREE"].leading_comments).to eq(" Test message for VALUE_THREE\n")
   end
 
   it "ProtobufDescriptor::HasParent#trailing_comments" do
