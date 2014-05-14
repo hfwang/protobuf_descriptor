@@ -3,6 +3,8 @@ class ProtobufDescriptor
   #
   # See {+FileDescriptorProto+}[https://code.google.com/p/protobuf/source/browse/trunk/src/google/protobuf/descriptor.proto#56]
   class FileDescriptor
+    include ProtobufDescriptor::HasChildren
+
     # The parent {ProtobufDescriptor}
     attr_reader :file_descriptor_set
 
@@ -20,6 +22,12 @@ class ProtobufDescriptor
     # List of the services that are defined at the top level of this file, as a
     # NamedCollection of {ProtobufDescriptor::ServiceDescriptor}
     attr_reader :service
+
+    # Field index is hard-coded since these are a bit annoying to grab
+    # consistently with the different protocol buffer implementations.
+    self.register_children(:message_type, 4)
+    self.register_children(:enum_type, 5)
+    self.register_children(:service, 6)
 
     def initialize(file_descriptor_set, file_descriptor_proto) #:nodoc:
       # This is basically a parent pointer.
@@ -47,11 +55,13 @@ class ProtobufDescriptor
     alias_method :enums, :enum_types
     alias_method :services, :service
 
-    # Set of all top-level messages, enums and services that are defined inside
-    # of this file
-    def children
-      @children ||= ProtobufDescriptor::NamedCollection.new(
-          @message_type.collection + @enum_type.collection + @service.collection)
+    # Whether source code info is associated with this descriptor
+    def has_source_code_info?
+      file_descriptor_proto.has_field?(:source_code_info)
+    end
+
+    def source_code_info
+      file_descriptor_proto.source_code_info
     end
 
     # Filename relative to root of source tree.

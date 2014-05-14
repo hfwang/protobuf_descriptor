@@ -45,7 +45,7 @@ describe ProtobufDescriptor do
 
           descriptor = ProtobufDescriptor.load(f.path)
 
-          expect(descriptor.files).to have(1).item
+          expect(descriptor.files.size).to eq(1)
         end
       end
     end
@@ -56,7 +56,7 @@ describe ProtobufDescriptor do
 
           descriptor = ProtobufDescriptor.decode_from(f)
 
-          expect(descriptor.files).to have(1).item
+          expect(descriptor.files.size).to eq(1)
         end
       end
     end
@@ -67,7 +67,7 @@ describe ProtobufDescriptor do
 
           descriptor = ProtobufDescriptor.decode(f.read)
 
-          expect(descriptor.files).to have(1).item
+          expect(descriptor.files.size).to eq(1)
         end
       end
     end

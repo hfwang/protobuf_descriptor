@@ -3,10 +3,16 @@ class ProtobufDescriptor
   #
   # See ServiceDescriptorProto[https://code.google.com/p/protobuf/source/browse/trunk/src/google/protobuf/descriptor.proto#188]
   class ServiceDescriptor
+    include ProtobufDescriptor::HasParent
+    include ProtobufDescriptor::NamedChild
+
     # Describes a method of a service.
     #
     # See MethodDescriptorProto[https://code.google.com/p/protobuf/source/browse/trunk/src/google/protobuf/descriptor.proto#196]
     class MethodDescriptor
+      include ProtobufDescriptor::HasParent
+      include ProtobufDescriptor::NamedChild
+
       # The parent {ProtobufDescriptor::ServiceDescriptor}
       attr_reader :parent
 
@@ -17,8 +23,6 @@ class ProtobufDescriptor
         @parent = parent
         @method_descriptor_proto = method_descriptor_proto
       end
-
-      include ProtobufDescriptor::HasParent
 
       # The name of the service method
       def name

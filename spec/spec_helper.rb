@@ -111,3 +111,7 @@ def with_descriptor(source, args={})
     yield ProtobufDescriptor.decode_from(f)
   end
 end
+
+def load_descriptor(source)
+  ProtobufDescriptor.load(File.join(File.dirname(__FILE__), "protos", "#{source}.desc"))
+end

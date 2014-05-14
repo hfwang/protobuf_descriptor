@@ -8,12 +8,11 @@ describe "WireCompiler" do
     with_descriptor("generator_test") do |descriptor|
       generated_classes = ghetto_parse_java_package(find_generated_files("generator_test", :wire))
 
-      children = descriptor.all_descendants
+      children = descriptor.all_descendants.map { |child|
+        [child.name, child.fully_qualified_wire_name]
+      }
 
-      expect(children).to have(generated_classes.size).items
-      children.each do |child|
-        expect(child.fully_qualified_wire_name).to eq(generated_classes[child.name])
-      end
+      expect(children).to contain_exactly(*generated_classes.to_a)
     end
   end
 end

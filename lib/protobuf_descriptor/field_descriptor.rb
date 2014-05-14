@@ -3,6 +3,8 @@ class ProtobufDescriptor
   #
   # See FieldDescriptorProto[https://code.google.com/p/protobuf/source/browse/trunk/src/google/protobuf/descriptor.proto#103]
   class FieldDescriptor
+    include ProtobufDescriptor::HasParent
+
     # The parent {ProtobufDescriptor::MessageDescriptor}
     attr_reader :parent
     # The +FieldDescriptorProto+ this +FieldDescriptor+ is wrapping.
@@ -61,8 +63,6 @@ class ProtobufDescriptor
     def name
       field_descriptor_proto.name
     end
-
-    include ProtobufDescriptor::HasParent
 
     # If type_name is set, this need not be set.  If both this and type_name
     # are set, this must be either TYPE_ENUM or TYPE_MESSAGE.

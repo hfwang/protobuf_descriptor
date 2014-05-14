@@ -15,6 +15,7 @@ class ProtobufDescriptor
   autoload :ServiceDescriptor, "protobuf_descriptor/service_descriptor"
 
   autoload :HasParent, "protobuf_descriptor/has_parent"
+  autoload :HasChildren, "protobuf_descriptor/has_children"
   autoload :NamedChild, "protobuf_descriptor/named_child"
   autoload :NamedCollection, "protobuf_descriptor/named_collection"
 
@@ -63,10 +64,10 @@ class ProtobufDescriptor
     seeds = files.to_a.dup
     children = Set.new
     while !seeds.empty?
-      seeds.pop.children.each do |child|
+      seeds.pop.named_children.each do |child|
         children << child
 
-        seeds << child if child.respond_to?(:children)
+        seeds << child if child.is_a?(HasChildren)
       end
     end
     children

@@ -4,7 +4,6 @@ describe ProtobufDescriptor::FileDescriptor do
   describe "#files" do
     it "has the right size" do
       with_descriptor("single_file_test") do |descriptor|
-        expect(descriptor.files).to have(1).items
         expect(descriptor.files.size).to eq(1)
       end
     end

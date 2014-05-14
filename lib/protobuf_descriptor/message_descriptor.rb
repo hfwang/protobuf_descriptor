@@ -3,6 +3,10 @@ class ProtobufDescriptor
   #
   # See DescriptorProto[https://code.google.com/p/protobuf/source/browse/trunk/src/google/protobuf/descriptor.proto#84]
   class MessageDescriptor
+    include ProtobufDescriptor::HasParent
+    include ProtobufDescriptor::NamedChild
+    include ProtobufDescriptor::HasChildren
+
     # The containing {ProtobufDescriptor::FileDescriptor}
     # or {ProtobufDescriptor::MessageDescriptor} that
     # defines this message.
@@ -23,17 +27,26 @@ class ProtobufDescriptor
     # {ProtobufDescriptor::MessageDescriptor::FieldDescriptor}
     attr_reader :field
 
+    # Field index is hard-coded since these are a bit annoying to grab
+    # consistently with the different protocol buffer implementations.
+    self.register_children(:field, 2)
+    self.register_children(:nested_type, 3)
+    self.register_children(:enum_type, 4)
+
     def initialize(parent, message_descriptor_proto)
       @parent = parent
       @message_descriptor_proto = message_descriptor_proto
+
       @nested_type = ProtobufDescriptor::NamedCollection.new(
           message_descriptor_proto.nested_type.map { |m|
               ProtobufDescriptor::MessageDescriptor.new(self, m)
           })
+
       @enum_type = ProtobufDescriptor::NamedCollection.new(
           message_descriptor_proto.enum_type.map { |m|
               ProtobufDescriptor::EnumDescriptor.new(self, m)
           })
+
       @field = ProtobufDescriptor::NamedCollection.new(
           message_descriptor_proto.field.map { |m|
               ProtobufDescriptor::FieldDescriptor.new(self, m)
@@ -67,14 +80,5 @@ class ProtobufDescriptor
     alias_method :enum_types, :enum_type
     alias_method :enums, :enum_type
     alias_method :extension_ranges, :extension_range
-
-    include ProtobufDescriptor::NamedChild
-
-    # Set of all top-level messages ahnd enums that are defined within this
-    # message.
-    def children
-      @children ||= ProtobufDescriptor::NamedCollection.new(
-          @nested_type.collection + @enum_type.collection)
-    end
   end
 end

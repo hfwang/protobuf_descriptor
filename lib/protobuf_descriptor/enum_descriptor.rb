@@ -3,6 +3,9 @@ class ProtobufDescriptor
   #
   # See {+EnumDescriptorProto+}[https://code.google.com/p/protobuf/source/browse/trunk/src/google/protobuf/descriptor.proto#84]
   class EnumDescriptor
+    include ProtobufDescriptor::HasParent
+    include ProtobufDescriptor::NamedChild
+
     # The containing {ProtobufDescriptor::FileDescriptor} or
     # {ProtobufDescriptor::MessageDescriptor} that defines this enum.
     attr_reader :parent
@@ -24,7 +27,5 @@ class ProtobufDescriptor
 
     # The +EnumOptions+ defined for this enum
     def options; enum_descriptor_proto.options; end
-
-    include NamedChild
   end
 end
