@@ -8,6 +8,11 @@ describe ProtobufDescriptor::MessageDescriptor do
       end
     end
 
+    it "handles package-less proto files" do
+      message_type = load_descriptor("generator_test")[:no_package].messages[:Mab]
+      expect(message_type.fully_qualified_name).to eq(".Mab")
+    end
+
     it "handles nested messages" do
       with_descriptor("service_rpc_test") do |descriptor|
         expect(descriptor[:wearabouts_pb].message_types[:UserProto].nested_type[:UserDetails].fully_qualified_name).to eq(".WearaboutsPb.UserProto.UserDetails")

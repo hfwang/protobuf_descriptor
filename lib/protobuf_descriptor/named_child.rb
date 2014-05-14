@@ -5,19 +5,31 @@ class ProtobufDescriptor
   # Classes including this module *must* respond_to `name` and `parent`
   module NamedChild
     def fully_qualified_name
-      return "#{parent.fully_qualified_name}.#{self.name}"
+      parent_name = parent.fully_qualified_name
+
+      return ".#{self.name}" if parent_name == "."
+      return "#{parent_name}.#{self.name}"
     end
 
     def fully_qualified_java_name
-      return "#{parent.fully_qualified_java_name}.#{self.name}"
+      parent_name = parent.fully_qualified_java_name
+
+      return "#{self.name}" if parent_name == ""
+      return "#{parent_name}.#{self.name}"
     end
 
     def fully_qualified_wire_name
-      return "#{parent.fully_qualified_wire_name}.#{self.name}"
+      parent_name = parent.fully_qualified_wire_name
+
+      return "#{self.name}" if parent_name == ""
+      return "#{parent_name}.#{self.name}"
     end
 
     def fully_qualified_ruby_name
-      return "#{parent.fully_qualified_ruby_name}::#{self.name}"
+      parent_name = parent.fully_qualified_ruby_name
+
+      return "::#{self.name}" if parent_name == "::"
+      return "#{parent_name}::#{self.name}"
     end
 
     def inspect

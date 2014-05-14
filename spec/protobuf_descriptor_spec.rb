@@ -36,6 +36,11 @@ describe ProtobufDescriptor do
         expect(descriptor.resolve_type_name("UnnestedEnum", ".porkbuns.FieldOptions.CType")).to eq(descriptor[:single_file].enums[:UnnestedEnum])
       end
     end
+
+    it "should handle fully qualified names for package-less proto files" do
+      descriptor = load_descriptor("generator_test")
+      expect(descriptor.resolve_type_name(".Mab")).to eq(descriptor[:no_package].messages[:Mab])
+    end
   end
 
   describe "Deserialization" do

@@ -110,7 +110,10 @@ class ProtobufDescriptor
 
     # Returns the fully qualified Java class name.
     def fully_qualified_java_name
-      return [java_package, java_outer_classname].compact.join('.')
+      return [
+          present?(java_package) ? java_package : nil,
+          present?(java_outer_classname) ? java_outer_classname : nil
+        ].compact.join('.')
     end
 
     # Returns the fully qualified Java name as Wire would generate it. Wire
