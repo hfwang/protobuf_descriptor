@@ -116,8 +116,17 @@ task :compile_spec_protos do
       (Dir[File.join(dir, "**", "**")] + Dir[File.join(dir, "**")]).uniq.each do |file|
         next if File.directory?(file)
         relative_path = Pathname.new(file).relative_path_from(dirpath)
-        zipfile.add(relative_path, file)
+
         puts "#{dest} <- #{relative_path}" if VERBOSE
+
+        entry = zipfile.add(relative_path, file)
+
+        # This is kind of icky, but we clear the timestamp to prevent the zip
+        # files from changing all the time.
+        entry.time = ::Zip::DOSTime.at(0)
+        if entry.extra.member?("UniversalTime")
+          entry.extra.delete("UniversalTime")
+        end
       end
     end
   end
