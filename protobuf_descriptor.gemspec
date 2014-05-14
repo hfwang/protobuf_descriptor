@@ -12,7 +12,7 @@ Gem::Specification.new do |gem|
   gem.email         = "hfwang@porkbuns.net"
   gem.homepage      = "https://github.com/hfwang/protobuf_descriptor"
 
-  gem.files         = `git ls-files`.split($/)
+  gem.files         = `git ls-files`.split($/).reject { |path| /spec\/.+\.(zip|desc)$/.match(path) }
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.require_paths = ['lib']

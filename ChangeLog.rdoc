@@ -1,3 +1,8 @@
+=== 1.1.2 / 2014-05-15
+
+* Fix bug handling named types contained within package-less protocol buffer files.
+* Stop bundling quite so many test files.
+
 === 1.1.1 / 2014-05-14
 
 Change gem dependencies, removing rubyzip as a runtime dep.
