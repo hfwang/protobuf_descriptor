@@ -44,6 +44,7 @@ describe "source_code_info" do
     expect(descriptor.resolve_type_name(".foo.Bar").fields["bar"].leading_comments.strip).to eq("Comment attached to bar.")
     expect(descriptor.resolve_type_name(".foo.Bar").fields["grault"].leading_comments.strip).to eq("Block comment attached to\n grault.")
     expect(descriptor.resolve_type_name(".foo.FooService").leading_comments.strip).to eq("Comment for FooService")
+    expect(descriptor.resolve_type_name(".foo.FooService").methods["Baz"].leading_comments.strip).to eq("Comment for Baz\n Maybe comments on return types.")
     expect(descriptor.resolve_type_name(".foo.BaseEnum").leading_comments.strip).to eq("Comment for BaseEnum")
   end
 end

@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe ProtobufDescriptor::ServiceDescriptor::MethodDescriptor do
+describe ProtobufDescriptor::MethodDescriptor do
   it "is sane" do
     with_descriptor("service_rpc_test") do |descriptor|
       file_descriptor = descriptor["wearabouts_api/user"]
