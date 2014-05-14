@@ -1,3 +1,7 @@
+=== 1.1.1 / 2014-05-14
+
+Change gem dependencies, removing rubyzip as a runtime dep.
+
 === 1.1.0 / 2014-05-14
 
 Add support for accessing the +source_code_info+ bits of protobuf
