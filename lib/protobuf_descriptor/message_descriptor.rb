@@ -18,14 +18,19 @@ class ProtobufDescriptor
     # The messages that are defined at the top level of this message, as a
     # NamedCollection of {ProtobufDescriptor::MessageDescriptor}
     attr_reader :nested_type
+    alias_method :nested_types, :nested_type
+    alias_method :messages, :nested_type
 
     # The enums that are defined at the top level of this message, as a
     # NamedCollection of {ProtobufDescriptor::EnumDescriptor}
     attr_reader :enum_type
+    alias_method :enum_types, :enum_type
+    alias_method :enums, :enum_type
 
     # The fields of this message, as a NamedCollection of
     # {ProtobufDescriptor::MessageDescriptor::FieldDescriptor}
     attr_reader :field
+    alias_method :fields, :field
 
     # Field index is hard-coded since these are a bit annoying to grab
     # consistently with the different protocol buffer implementations.
@@ -62,23 +67,17 @@ class ProtobufDescriptor
     def extension_range
       message_descriptor_proto.extension_range
     end
+    alias_method :extension_ranges, :extension_range
 
     # The extensions defined for this message
     def extension
       message_descriptor_proto.extension
     end
+    alias_method :extensions, :extension
 
     # The name of the message
     def name
       message_descriptor_proto.name
     end
-
-    alias_method :fields, :field
-    alias_method :extensions, :extension
-    alias_method :nested_types, :nested_type
-    alias_method :messages, :nested_type
-    alias_method :enum_types, :enum_type
-    alias_method :enums, :enum_type
-    alias_method :extension_ranges, :extension_range
   end
 end
