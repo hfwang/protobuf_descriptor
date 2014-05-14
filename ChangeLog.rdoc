@@ -1,4 +1,10 @@
-=== 1.0.1 / not yet released
+=== 1.1.0 / 2014-05-14
+
+Add support for accessing the +source_code_info+ bits of protobuf
+descriptors. This mainly means that the leading and trailing comments can be
+extracted for various declarations.
+
+=== 1.0.1 / not released
 
 Remove active_support dependency. The protobuf library still requires
 active_support though, so this doesn't really change anything.
