@@ -19,6 +19,7 @@ Gem::Specification.new do |gem|
 
   gem.add_dependency 'protobuf', '~> 3.0', '>= 3.0.0'
 
+  gem.add_development_dependency "codeclimate-test-reporter"
   gem.add_development_dependency 'pry', '~> 0.9.12.6'
   gem.add_development_dependency 'rake', '~> 10.3'
   gem.add_development_dependency 'rspec', '~> 3.0.0.beta2'
